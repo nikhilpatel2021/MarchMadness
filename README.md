@@ -12,10 +12,24 @@ Activate Virtual Environment:
 
 $ . venv/bin/activate or > venv\Scripts\activate
 
+Windows:
+
+$ py -3 -m venv venv
+
+$ venv\Scripts\activate
+
+$ pip install Flask
+
 # Run Flask
 $ export FLASK_APP=mm.py
 
 $ flask run
+
+Windows:
+
+C:\path\to\app> set FLASK_APP=mm.py
+
+C:\path\to\app> flask run
 
 Navigate to localhost:5000
 
