@@ -2,6 +2,7 @@
 
 Python backend with Flask frontend. Uses machine learning techniques and allows the user to select a model to run on the tournament. 
 
+
 # Flask
 First install Flask:
 
@@ -18,3 +19,5 @@ $ flask run
 
 Navigate to localhost:5000
 
+# Kaggle Competition
+https://www.kaggle.com/c/google-cloud-ncaa-march-madness-2020-division-1-mens-tournament
