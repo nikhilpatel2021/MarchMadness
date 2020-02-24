@@ -7,6 +7,7 @@ https://flask.palletsprojects.com/en/1.1.x/installation/#installation
 
 # Run Flask
 $ export FLASK_APP=mm.py
+
 $ flask run
 
 Navigate to localhost:5000
