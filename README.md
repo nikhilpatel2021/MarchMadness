@@ -2,8 +2,14 @@
 
 Python backend with Flask frontend. Uses machine learning techniques and allows the user to select a model to run on the tournament. 
 
-# Install Flask
+# Flask
+First install Flask:
+
 https://flask.palletsprojects.com/en/1.1.x/installation/#installation
+
+Activate Virtual Environment:
+
+$ . venv/bin/activate or > venv\Scripts\activate
 
 # Run Flask
 $ export FLASK_APP=mm.py
