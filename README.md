@@ -1,4 +1,4 @@
-# MarchMadness 2020
+# MarchMadness 2020 - Nikhil Patel, Radin Marinov
 
 Python backend with Flask frontend. Uses machine learning techniques and allows the user to select a model to run on the tournament. 
 
