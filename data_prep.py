@@ -12,7 +12,10 @@ import sys
 directory = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.join(directory, 'kaggle_data/MRegularSeasonDetailedResults.csv'))
 
+# Read in detailed regular season game data
 regular_season_df = pd.read_csv("kaggle_data/MRegularSeasonDetailedResults.csv/MRegularSeasonDetailedResults.csv")
+
+# Add possessions as a stat each game for both teams
 regular_season_df['WPoss']  = regular_season_df['WFGA'] \
                              + regular_season_df['WTO'] \
                              + regular_season_df['WFTA'] * 0.44 \
@@ -23,6 +26,9 @@ regular_season_df['LPoss']  = regular_season_df['LFGA'] \
                              + regular_season_df['LFTA'] * 0.44\
                              - regular_season_df['LOR']
                              
+# Begin creating end-of-season-stats for each team for each season  
+# These stats will be a collection of simple team stats, advanced team stats,
+# and advanced team opponent stats
 end_of_season_stats = []
 years = pd.unique(regular_season_df.Season)
 
