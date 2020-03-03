@@ -13,14 +13,18 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score
 
+#pls keep this here thx
+import warnings
+warnings.filterwarnings("ignore")
+
 random.seed(1)
-end_of_season_stats_df              = pd.DataFrame.from_csv("data_prep_data/end_of_season_stats.csv")
-tourney_matchup_df = pd.DataFrame.from_csv("data_prep_data/tourney_matchup_df.csv")
+end_of_season_stats_df              = pd.read_csv("data_prep_data/end_of_season_stats.csv")
+tourney_matchup_df = pd.read_csv("data_prep_data/tourney_matchup_df.csv")
 #Tourney Simulator
-seeds_df                            = pd.DataFrame.from_csv("kaggle_data/MNCAATourneySeeds.csv")
-slots_df                            = pd.DataFrame.from_csv("kaggle_data/MNCAATourneySlots.csv")
-seedroundslots_df                   = pd.DataFrame.from_csv("kaggle_data/MNCAATourneySeedRoundSlots.csv")
-tourney_df                          = pd.DataFrame.from_csv("kaggle_data/MNCAATourneyCompactResults.csv")
+seeds_df                            = pd.read_csv("kaggle_data/MNCAATourneySeeds.csv")
+slots_df                            = pd.read_csv("kaggle_data/MNCAATourneySlots.csv")
+seedroundslots_df                   = pd.read_csv("kaggle_data/MNCAATourneySeedRoundSlots.csv")
+tourney_df                          = pd.read_csv("kaggle_data/MNCAATourneyCompactResults.csv")
 
 seeds_df                            = seeds_df.reset_index()
 seeds_df['Season']                  = seeds_df['Season'].apply(str)
@@ -41,15 +45,16 @@ slots_df                  = pd.merge(slots_df, seeds_df, how='left', on= ['Seaso
 
 slots_df['Winner'] = 0
 
-conferences_df                      = pd.DataFrame.from_csv("kaggle_data/MTeamConferences.csv")
+conferences_df                      = pd.read_csv("kaggle_data/MTeamConferences.csv")
 conferences_df                      = conferences_df.reset_index()
 conferences_df['Season']            = conferences_df['Season'].apply(str)
 conferences_df['Season']            = conferences_df.Season.str[:4]
 conferences_df['Season']            = conferences_df['Season'].astype(int)
 conferences_df                      = conferences_df[conferences_df.Season > 2002]
-teams_df                            = pd.DataFrame.from_csv("kaggle_data/MTeams.csv")
+teams_df                            = pd.read_csv("kaggle_data/MTeams.csv")
 teams_df = teams_df.reset_index()
 
+#year - use data from previos years
 def get_model(year, return_auc=False):
     stats = list(tourney_matchup_df)[4:len(list(tourney_matchup_df))]
     X_train = tourney_matchup_df[tourney_matchup_df.Season < year][stats]
@@ -89,11 +94,11 @@ def create_matchup(team1, team2, year, conferences_df):
     for stat in list(end_of_season_stats_df)[2:len(list(end_of_season_stats_df))]:
         matchup['diff_' + stat] = matchup['Team1_' + stat] - matchup['Team2_' + stat]
     matchup['diff_seed'] = team1_seed - team2_seed
-    
     matchup['Season'] = year
-    conferences_df = conferences_df.rename(columns={ conferences_df.columns[1]: "Team1_teamID" })
+    conferences_df = conferences_df.rename(columns={ conferences_df.columns[2]: "Team1_teamID" })
+    
     matchup                  = pd.merge(matchup, conferences_df, how= 'left', on= ['Season', 'Team1_teamID'])
-    conferences_df = conferences_df.rename(columns={ conferences_df.columns[1]: "Team2_teamID" })
+    conferences_df = conferences_df.rename(columns={ conferences_df.columns[2]: "Team2_teamID" })
     matchup                  = pd.merge(matchup, conferences_df, how= 'left', on= ['Season', 'Team2_teamID'])
     matchup = matchup.drop('Season', axis=1)
     matchup = pd.get_dummies(matchup)
@@ -137,7 +142,8 @@ def get_winner(team1, team2, year, model):
         return team1
     else: 
         return team2
-    
+
+#Just call this
 def season_simulator(year):
     season = slots_df[slots_df.Season == year]
     winners = {}
