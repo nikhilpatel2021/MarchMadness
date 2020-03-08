@@ -1,4 +1,4 @@
-#Format Data for frontend data
+#Format Data for frontend data from google/kaggle style output
 import csv
 
 confereceOrder = ("W", "X", "Z", "Y")

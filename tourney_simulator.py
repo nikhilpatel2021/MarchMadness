@@ -16,6 +16,7 @@ from sklearn.metrics import roc_auc_score
 #pls keep this here thx
 import warnings
 warnings.filterwarnings("ignore")
+print("STARTING")
 
 random.seed(1)
 end_of_season_stats_df              = pd.read_csv("data_prep_data/end_of_season_stats.csv")
@@ -53,6 +54,8 @@ conferences_df['Season']            = conferences_df['Season'].astype(int)
 conferences_df                      = conferences_df[conferences_df.Season > 2002]
 teams_df                            = pd.read_csv("kaggle_data/MTeams.csv")
 teams_df = teams_df.reset_index()
+
+print("DATAFRAMES MADE")
 
 #year - use data from previos years
 def get_model(year, return_auc=False):
@@ -145,13 +148,16 @@ def get_winner(team1, team2, year, model):
 
 #Just call this
 def season_simulator(year):
+    print("CALL TO SIMULATOR")
     season = slots_df[slots_df.Season == year]
     winners = {}
     model = get_model(year)
     for slot in season.Slot[~np.isnan(season[['TeamID_x', 'TeamID_y']]).any(1)]:
         team1 = season.TeamID_x[season.Slot == slot].iloc[0]
         team2 = season.TeamID_y[season.Slot == slot].iloc[0]
+        print("CALL GET WINNER")
         winners[slot] = get_winner(team1, team2, year, model)
+        print("DONE CALL WINNER")
         season.Winner[season.Slot == slot]  = winners[slot]
     while season[['TeamID_x', 'TeamID_y']].isnull().values.any():   
         for slot in season.Slot:
